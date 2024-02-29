@@ -82,7 +82,7 @@
 							<Border  Height="60"
                                      Width="60" 
                                      x:Name="borderStop" 
-                                     Background="#BA4949"
+                                     Background="#B1B1B1"
                                      BorderThickness="0"
                                      CornerRadius="50">
 								<Image Source="..\Images/stop-solid.png" Width="40" Margin="0,0,0,0"/>
@@ -91,7 +91,7 @@
 						<ControlTemplate.Triggers>
 							<!-- Déclencheur pour le survol de la souris -->
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="borderStop" Property="Background" Value="#9F3D3D"/>
+								<Setter TargetName="borderStop" Property="Background" Value="#C1C1C1"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -111,7 +111,7 @@
 							<Border  Height="60"
                                      Width="60" 
                                      x:Name="borderPlay" 
-                                     Background="#BA4949"
+                                     Background="#B1B1B1"
                                      BorderThickness="0"
                                      CornerRadius="50">
 								<Image x:Name="image" Source="..\Images/play-solid.png" Width="40" Margin="5,0,0,0"/>
@@ -120,7 +120,7 @@
 						<ControlTemplate.Triggers>
 							<!-- Déclencheur pour le survol de la souris -->
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="borderPlay" Property="Background" Value="#9F3D3D"/>
+								<Setter TargetName="borderPlay" Property="Background" Value="#C1C1C1"/>
 							</Trigger>
 							<Trigger Property="IsChecked" Value="True">
 								<Setter TargetName="image" Property="Source" Value="..\Images\pause-solid.png"/>
@@ -145,7 +145,7 @@
 							<Border  Height="60"
                                      Width="60" 
                                      x:Name="borderRestart" 
-                                     Background="#BA4949"
+                                     Background="#B1B1B1"
                                      BorderThickness="0"
                                      CornerRadius="50">
 								<Image Source="..\Images/replay-solid.png" Width="40" Margin="0,0,0,0"/>
@@ -154,7 +154,7 @@
 						<ControlTemplate.Triggers>
 							<!-- Déclencheur pour le survol de la souris -->
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="borderRestart" Property="Background" Value="#9F3D3D"/>
+								<Setter TargetName="borderRestart" Property="Background" Value="#C1C1C1"/>
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>

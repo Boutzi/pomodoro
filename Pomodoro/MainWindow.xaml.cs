@@ -1,165 +1,342 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using NAudio.Wave;
+using System;
 using System.ComponentModel;
+using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
-using Pomodoro.Core;
 
 
 namespace Pomodoro
 {
 	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
-		private TimeSpan pomodoroTime = TimeSpan.FromMinutes(25); // Temps par défaut pour le Pomodoro
-		private DispatcherTimer timer;
+
+		#region Declaration
+		private TimeSpan pomodoroTime = TimeSpan.FromMinutes(25);
+		private TimeSpan shortBreakTime = TimeSpan.FromMinutes(5);
+		private TimeSpan longBreakTime = TimeSpan.FromMinutes(15);
+
+        private WaveOutEvent outputDevice;
+        private AudioFileReader audioFile;
+
+        private string state;
 		private bool isTimerRunning;
+		private TimeSpan remainingTime;
 
-		public event PropertyChangedEventHandler PropertyChanged;
+		private DispatcherTimer timer;
+        public event PropertyChangedEventHandler PropertyChanged;
+		private SolidColorBrush mainColorBrush;
+		private SolidColorBrush secondaryColorBrush;
+		private SolidColorBrush thirdColorBrush;
+		private SolidColorBrush borderColorBrush;
+		private SolidColorBrush transparentColorBrush;
 
+		private SolidColorBrush mainColorDarkBrush;
+		private SolidColorBrush secondaryColorDarkBrush;
+		private SolidColorBrush thirdColorDarkBrush;
+		private SolidColorBrush borderColorDarkBrush;
+
+		private SolidColorBrush mainColorDarkerBrush;
+		private SolidColorBrush secondaryColorDarkerBrush;
+		private SolidColorBrush thirdColorDarkerBrush;
+		private SolidColorBrush borderColorDarkerBrush;
+		#endregion
+
+		#region Initialisation
 		public MainWindow()
 		{
 			InitializeComponent();
-			DataContext = this;
 			InitializeTimer();
+			InitializeData();
+			mainColorBrush = (SolidColorBrush)FindResource("mainColor");
+			secondaryColorBrush = (SolidColorBrush)FindResource("secondaryColor");
+			thirdColorBrush = (SolidColorBrush)FindResource("thirdColor");
+			borderColorBrush = (SolidColorBrush)FindResource("borderColor");
+			transparentColorBrush = (SolidColorBrush)FindResource("transparentColor");
+
+			mainColorDarkBrush = (SolidColorBrush)FindResource("mainColorDark");
+			secondaryColorDarkBrush = (SolidColorBrush)FindResource("secondaryColorDark");
+			thirdColorDarkBrush = (SolidColorBrush)FindResource("thirdColorDark");
+			borderColorDarkBrush = (SolidColorBrush)FindResource("borderColorDark");
+
+			mainColorDarkerBrush = (SolidColorBrush)FindResource("mainColorDarker");
+			secondaryColorDarkerBrush = (SolidColorBrush)FindResource("secondaryColorDarker");
+			thirdColorDarkerBrush = (SolidColorBrush)FindResource("thirdColorDarker");
+			borderColorDarkerBrush = (SolidColorBrush)FindResource("borderColorDarker");
 		}
 
-		// Propriété pour le temps restant du Pomodoro
-		private TimeSpan remainingTime;
-		public TimeSpan RemainingTime
+		private void InitializeData()
 		{
-			get { return remainingTime; }
-			set
-			{
-				if (value != remainingTime)
-				{
-					remainingTime = value;
-					OnPropertyChanged(nameof(RemainingTime));
-				}
-			}
-		}
+            DataContext = this;
+            state = "pomodoro";
+        }
 
-		protected virtual void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
 
-		// Initialiser le minuteur
-		private void InitializeTimer()
-		{
-			timer = new DispatcherTimer();
-			timer.Interval = TimeSpan.FromSeconds(1);
-			timer.Tick += Timer_Tick;
-			RemainingTime = pomodoroTime;
+        private void InitializeTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += new EventHandler(Timer_Tick);
+            pomodoroValue.Text = pomodoroTime.ToString(@"mm");
+            shortBreakValue.Text = shortBreakTime.ToString(@"mm");
+			longBreakValue.Text = longBreakTime.ToString(@"mm");
+			TimerPomodoroText.Text = pomodoroTime.ToString(@"mm\:ss");
+			TimerShortBreakText.Text = shortBreakTime.ToString(@"mm\:ss");
+			TimerLongBreakText.Text = longBreakTime.ToString(@"mm\:ss");
+            remainingTime = pomodoroTime;
 		}
+		#endregion
 
-		// Gestionnaire pour l'événement Tick du minuteur
+		#region Timer Functions
 		private void Timer_Tick(object sender, EventArgs e)
 		{
 			if (isTimerRunning)
 			{
-				RemainingTime = RemainingTime.Subtract(TimeSpan.FromSeconds(1));
-				if (RemainingTime == TimeSpan.Zero)
+				remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(1));
+                ResetTimerText();
+                if (remainingTime == TimeSpan.Zero)
 				{
-					// Le temps du Pomodoro est écoulé
-					// Vous pouvez ajouter ici le code pour notifier l'utilisateur ou démarrer une pause automatique, etc.
-					StopTimer();
-				}
+                    PlaySound(Properties.Resources.end);
+                    switch (state)
+					{
+						case "pomodoro":
+							ChangeState("shortbreak");
+							break;
+						case "shortbreak":
+							ChangeState("pomodoro");
+							break;
+						case "longbreak":
+                            ChangeState("pomodoro");
+                            break;
+                    }
+                }
 			}
 		}
 
-		// Démarrer le minuteur
-		private void StartTimer()
+		private void ChangeState(string stateToGo)
 		{
-			isTimerRunning = true;
-			timer.Start();
+            switch (stateToGo)
+            {
+                case "pomodoro":
+					state = "pomodoro";
+                    if (int.TryParse(pomodoroValue.Text, out int pomodoroMinutes))
+                    {
+                        pomodoroTime = TimeSpan.FromMinutes(pomodoroMinutes);
+                        remainingTime = pomodoroTime;
+                        TimerPomodoroText.Text = remainingTime.ToString(@"mm\:ss");
+                        TimerPomodoro.Visibility = Visibility.Visible;
+                        TimerShortBreak.Visibility = Visibility.Hidden;
+                        TimerLongBreak.Visibility = Visibility.Hidden;
+                    }
+					///change background
+					Border1.Background = mainColorDarkerBrush;
+					Border2.Background = mainColorBrush;
+					Border3.Background = mainColorDarkBrush;
+					Border4.Background = Brushes.Transparent;
+					Border5.Background = Brushes.Transparent;
+					Border6.Background = mainColorDarkBrush;
+					Border7.Background = mainColorDarkBrush;
+					Border8.Background = mainColorDarkBrush;
+					break;
+				case "shortbreak":
+                    state = "shortbreak";
+                    if (int.TryParse(shortBreakValue.Text, out int shortBreakMinutes))
+                    {
+                        shortBreakTime = TimeSpan.FromMinutes(shortBreakMinutes);
+                        remainingTime = shortBreakTime;
+                        TimerShortBreakText.Text = remainingTime.ToString(@"mm\:ss");
+                        TimerShortBreak.Visibility = Visibility.Visible;
+                        TimerPomodoro.Visibility = Visibility.Hidden;
+                        TimerLongBreak.Visibility = Visibility.Hidden;
+                    }
+					///change background
+					Border1.Background = secondaryColorDarkerBrush;
+					Border2.Background = secondaryColorBrush;
+					Border3.Background = Brushes.Transparent;
+					Border4.Background = secondaryColorDarkBrush;
+					Border5.Background = Brushes.Transparent;
+					Border6.Background = secondaryColorDarkBrush;
+					Border7.Background = secondaryColorDarkBrush;
+					Border8.Background = secondaryColorDarkBrush;
+					break;
+				case "longbreak":
+                    state = "longbreak";
+                    if (int.TryParse(longBreakValue.Text, out int longBreakMinutes))
+                    {
+						longBreakTime = TimeSpan.FromMinutes(longBreakMinutes);
+                        remainingTime = longBreakTime;
+                        TimerLongBreakText.Text = remainingTime.ToString(@"mm\:ss");
+                        TimerLongBreak.Visibility = Visibility.Visible;
+                        TimerPomodoro.Visibility = Visibility.Hidden;
+                        TimerShortBreak.Visibility = Visibility.Hidden;
+                    }
+					///change background
+					Border1.Background = thirdColorDarkerBrush;
+					Border2.Background = thirdColorBrush;
+					Border3.Background = Brushes.Transparent;
+					Border4.Background = Brushes.Transparent;
+					Border5.Background = thirdColorDarkBrush;
+					Border6.Background = thirdColorDarkBrush;
+					Border7.Background = thirdColorDarkBrush;
+					Border8.Background = thirdColorDarkBrush;
+					break;
+            }
+            StopTimer();
+        }
+
+		private void StartTimer()
+        {
+            timer.Start();
+            isTimerRunning = true;
+			playPausePlayerButton.IsChecked = true;
+			PlaySound(Properties.Resources.start);
 		}
 
-		// Mettre en pause le minuteur
+		private void PlaySound(System.IO.UnmanagedMemoryStream sound)
+        {
+            SoundPlayer soundstart = new SoundPlayer(sound);
+            soundstart.Play();
+        }
+
 		private void PauseTimer()
 		{
 			isTimerRunning = false;
 			timer.Stop();
 		}
 
-		// Arrêter le minuteur
 		private void StopTimer()
 		{
 			isTimerRunning = false;
+			playPausePlayerButton.IsChecked = false;
 			timer.Stop();
-			RemainingTime = pomodoroTime; // Réinitialiser le temps restant
+			ResetTimerText();
 		}
+        #endregion
 
-		// Gestionnaire pour le clic sur le bouton Play/Pause
-		private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+		private void ResetTimerText()
 		{
-			StartTimer();
-		}
+			if(isTimerRunning)
+            {
+                TimerPomodoroText.Text = remainingTime.ToString(@"mm\:ss");
+                TimerLongBreakText.Text = remainingTime.ToString(@"mm\:ss");
+                TimerShortBreakText.Text = remainingTime.ToString(@"mm\:ss");
+            }
+			if (!isTimerRunning)
+			{
+				switch (state)
+				{
+					case "pomodoro":
+                        TimerPomodoroText.Text = pomodoroTime.ToString(@"mm\:ss");
+                        remainingTime = pomodoroTime;
+						break;
+					case "longbreak":
+                        TimerLongBreakText.Text = longBreakTime.ToString(@"mm\:ss");
+                        remainingTime = longBreakTime;
+						break;
+					case "shortbreak":
+                        TimerShortBreakText.Text = shortBreakTime.ToString(@"mm\:ss");
+                        remainingTime = shortBreakTime;
+						break;
+				}
+			}
 
-		// Gestionnaire pour le clic sur le bouton Play/Pause
-		private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
-		{
-			PauseTimer();
-		}
+        }
 
-		// Gestionnaire pour le clic sur le bouton Restart
-		private void Restart_Click(object sender, RoutedEventArgs e)
-		{
-			StopTimer();
-			StartTimer();
-		}
-		// Gestionnaire pour le clic sur le bouton Restart
-		private void Stop_Click(object sender, RoutedEventArgs e)
-		{
-			StopTimer();
-		}
-
-
-		// Gestionnaire pour l'événement LostFocus de la TextBox PomodoroValue
+		#region Input Focus Functions
 		private void PomodoroValue_LostFocus(object sender, RoutedEventArgs e)
 		{
-			if (int.TryParse(PomodoroValue.Text, out int pomodoroMinutes))
+			if (int.TryParse(pomodoroValue.Text, out int pomodoroMinutes))
 			{
 				pomodoroTime = TimeSpan.FromMinutes(pomodoroMinutes);
-				RemainingTime = pomodoroTime;
-			}
+				if(!isTimerRunning)
+                    remainingTime = pomodoroTime;
+					TimerPomodoroText.Text = remainingTime.ToString(@"mm\:ss");
+                }
 		}
 
-		// Gestionnaire pour l'événement LostFocus de la TextBox shortBreakValue
 		private void ShortBreakValue_LostFocus(object sender, RoutedEventArgs e)
 		{
 			if (int.TryParse(shortBreakValue.Text, out int shortBreakMinutes))
 			{
-				// Mettre à jour la durée de la pause courte
-			}
+				shortBreakTime = TimeSpan.FromMinutes(shortBreakMinutes);
+                if (!isTimerRunning)
+                    remainingTime = shortBreakTime;
+                TimerShortBreakText.Text = remainingTime.ToString(@"mm\:ss");
+            }
 		}
 
-		// Gestionnaire pour l'événement LostFocus de la TextBox longBreakValue
 		private void LongBreakValue_LostFocus(object sender, RoutedEventArgs e)
 		{
 			if (int.TryParse(longBreakValue.Text, out int longBreakMinutes))
 			{
-				// Mettre à jour la durée de la pause longue
-			}
+				longBreakTime = TimeSpan.FromMinutes(longBreakMinutes);
+                if (!isTimerRunning)
+                    remainingTime = longBreakTime;
+                TimerLongBreakText.Text = remainingTime.ToString(@"mm\:ss");
+            }
+		}
+		#endregion
+
+		#region Button Click Functions
+		private void PomodoroMode_Click(object sender, RoutedEventArgs e)
+		{
+			ChangeState("pomodoro");
 		}
 
+		private void ShortBreakMode_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeState("shortbreak");
+        }
 
+		private void LongBreakMode_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeState("longbreak");
+        }
+        #endregion
 
+        #region Player Functions
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            StartTimer();
+        }
 
-		// Gestionnaire pour le clic sur le bouton Minimize
-		private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            PauseTimer();
+        }
+
+        private void Restart_Click(object sender, RoutedEventArgs e)
+        {
+            StopTimer();
+            remainingTime = remainingTime.Add(TimeSpan.FromSeconds(1));
+            StartTimer();
+		}
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            StopTimer();
+        }
+        #endregion
+
+        #region Window Configuration
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
 		{
 			WindowState = WindowState.Minimized;
 		}
 
-		// Gestionnaire pour le clic sur le bouton Close
 		private void CloseButton_Click(object sender, RoutedEventArgs e)
 		{
 			Close();
 		}
 
-		// Gestionnaire pour le déplacement de la fenêtre via la barre de titre (dragbar)
 		private void MouseDragBar(object sender, MouseButtonEventArgs e)
 		{
 			if (e.ChangedButton == MouseButton.Left)
@@ -167,5 +344,6 @@ namespace Pomodoro
 				DragMove();
 			}
 		}
+		#endregion
 	}
 }
