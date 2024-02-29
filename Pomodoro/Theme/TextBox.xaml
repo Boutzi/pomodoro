@@ -1,0 +1,38 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<Style BasedOn="{StaticResource {x:Type TextBox}}"
+       TargetType="{x:Type TextBox}"
+       x:Key="TextBox">
+		<Style.Setters>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="TextBox">
+						<Grid>
+							<Border  Height="20"
+									 Width="100"
+                                     x:Name="borderPomodoro" 
+                                     Background="#E3E3E3"
+                                     BorderThickness="0"
+                                     CornerRadius="3">
+								<ScrollViewer Height="20" Width="100" x:Name="PART_ContentHost"/>
+							</Border>
+						</Grid>
+						<ControlTemplate.Triggers>
+							<!-- Déclencheur pour le survol de la souris -->
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="borderPomodoro" Property="Background" Value="#FFFFFF"/>
+							</Trigger>
+							<Trigger Property="IsFocused" Value="True">
+								<Setter TargetName="borderPomodoro" Property="Background" Value="#FFFFFF"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="HorizontalContentAlignment" Value="Center"/>
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style.Setters>
+	</Style>
+	
+</ResourceDictionary>

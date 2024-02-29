@@ -1,0 +1,257 @@
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pomodoro"
+		xmlns:core="clr-namespace:Pomodoro.Core"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        Title="Pomodoro" 
+        Height="400" 
+        Width="640"
+        FontFamily="Calibri"
+        FontWeight="Bold"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        AllowsTransparency="True"
+		x:Class="Pomodoro.MainWindow">
+	<Window.Resources>
+		<local:TextBoxLostFocusBehavior x:Key="TextBoxLostFocusBehavior"/>
+	</Window.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="32"/>
+			<RowDefinition/>
+		</Grid.RowDefinitions>
+		<Border Background="{StaticResource mainColorDarker}"
+                CornerRadius="5 5 0 0"
+                BorderThickness="1 1 1 0"
+                BorderBrush="{StaticResource borderColorDarker}"
+			    Grid.ColumnSpan="2"
+			    Grid.Row="0"
+                MouseLeftButtonDown="MouseDragBar">
+			
+			<Border Grid.Row="0"
+                    Height="32"
+                    VerticalAlignment="Top"
+                    CornerRadius="0,5,0,0">
+				
+				<StackPanel Grid.Row="1" 
+							Orientation="Horizontal" 
+							VerticalAlignment="Center" 
+							HorizontalAlignment="Right" 
+							Margin="20,0,0,0">
+
+					<Button Content="_" 
+                            Click="MinimizeButton_Click"
+                            Background="Transparent"
+                            Style="{StaticResource window_minimize}"
+                            Foreground="{StaticResource borderColor}"/>
+					<Button Content="&#x2715;"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Click="CloseButton_Click"
+                            Style="{StaticResource window_exit}"/>
+
+				</StackPanel>
+				
+			</Border>
+
+		</Border>
+		<Border Background="{StaticResource mainColor}"
+                CornerRadius="0 0 5 5"
+                BorderThickness="1 0 1 1"
+                BorderBrush="{StaticResource borderColorDarker}"
+			    Grid.ColumnSpan="2"
+			    Grid.Row="1">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="64"/>
+					<RowDefinition Height="110"/>
+					<RowDefinition Height="91"/>
+					<RowDefinition Height="30"/>
+					<RowDefinition Height="73"/>
+				</Grid.RowDefinitions>
+				
+				<Border Grid.Row="0"
+						Width="420"
+						CornerRadius="5"
+						BorderThickness="1 0 1 1">
+
+				</Border>
+				
+				<Border Grid.Row="0"
+						Width="420"
+						Background="{StaticResource transparentColor}"
+						CornerRadius="0 0 5 5"
+						BorderThickness="1 0 1 1">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+						<Border Grid.Column="0"
+								Width="116"
+								Height="38"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<TextBlock Text="Pomodoro"
+									   Foreground="{StaticResource borderColor}"
+									   TextAlignment="Center"
+									   VerticalAlignment="Center"
+									   FontSize="16"/>
+						</Border>
+						<Border Grid.Column="1"
+								Width="116"
+								Height="38"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<TextBlock Text="Short Break"
+									   Foreground="{StaticResource borderColor}"
+									   TextAlignment="Center"
+									   VerticalAlignment="Center"
+									   FontSize="16"/>
+						</Border>
+						<Border Grid.Column="2"
+								Width="116"
+								Height="38"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<TextBlock Text="Long Break"
+									   Foreground="{StaticResource borderColor}"
+									   TextAlignment="Center"
+									   VerticalAlignment="Center"
+									   FontSize="16"/>
+						</Border>
+					</Grid>
+				</Border>
+				
+				<Border Grid.Row="1"
+						Width="420"
+						CornerRadius="5"
+						BorderThickness="1 0 1 1">
+
+					<TextBlock Text="{Binding RemainingTime, StringFormat=mm\\:ss}"
+							   Foreground="{StaticResource borderColor}"
+							   TextAlignment="Center"
+							   VerticalAlignment="Center"
+							   FontSize="103"/>
+				</Border>
+				
+				<Border Grid.Row="2"
+                        Background="{StaticResource transparentColor}"
+                        BorderBrush="{StaticResource borderColorDarker}"
+                        BorderThickness="1"
+                        CornerRadius="45"
+                        Height="90"
+                        Padding="0"
+                        Width="220"
+                        Margin="0,0,0,0">
+					<StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Background="Transparent">
+						<StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Center">
+							<Button Margin="0,0,0,0"
+                                    Style="{StaticResource StopButtonTheme}"
+                                    Click="Stop_Click"/>
+							<ToggleButton Margin="5,0,0,0"
+                                          Style="{StaticResource PlayPauseButtonTheme}"
+                                          Checked="ToggleButton_Checked"
+                                          x:Name="playPausePlayerButton"
+                                          Unchecked="ToggleButton_Unchecked"/>
+							<Button Margin="5,0,0,0"
+                                    Style="{StaticResource RestartButtonTheme}"
+                                    Click="Restart_Click"/>
+						</StackPanel>
+					</StackPanel>
+				</Border>
+				
+				<Border Grid.Row="4"
+						Width="420"
+						Background="{StaticResource transparentColor}"
+						CornerRadius="5 5 0 0"
+						BorderThickness="1 0 1 1">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+							<ColumnDefinition/>
+						</Grid.ColumnDefinitions>
+
+						<Border Grid.Column="0"
+								Width="116"
+								Height="48"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<StackPanel>
+								<TextBlock Text="Pomodoro"
+									   Foreground="{StaticResource borderColor}"
+									   TextAlignment="Center"
+									   VerticalAlignment="Center"
+									   FontSize="16"/>
+								<TextBox x:Name="PomodoroValue"
+									 Text="25"
+									 Style="{StaticResource TextBox}"
+									 LostFocus="{Binding PomodoroValue_LostFocus}">
+									<i:Interaction.Behaviors>
+										<core:TextBoxLostFocusBehavior/>
+									</i:Interaction.Behaviors>
+								</TextBox>
+							</StackPanel>
+							
+						</Border>
+						<Border Grid.Column="1"
+								Width="116"
+								Height="48"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<StackPanel>
+								<TextBlock Text="Short Break"
+										   Foreground="{StaticResource borderColor}"
+										   TextAlignment="Center"
+										   VerticalAlignment="Center"
+										   FontSize="16"/>
+							<TextBox x:Name="shortBreakValue"
+									 Text="5"
+									 Style="{StaticResource TextBox}"
+									 LostFocus="{Binding ShortBreakValue_LostFocus}"/>
+							</StackPanel>
+						</Border>
+						<Border Grid.Column="2"
+								Width="116"
+								Height="48"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<StackPanel>
+							<TextBlock Text="Long Break"
+									   Foreground="{StaticResource borderColor}"
+									   TextAlignment="Center"
+									   VerticalAlignment="Center"
+									   FontSize="16"/>
+								<TextBox x:Name="longBreakValue"
+										 Text="15"
+										 Style="{StaticResource TextBox}"
+									 LostFocus="{Binding LongBreakValue_LostFocus}"/>
+							</StackPanel>
+						</Border>
+					</Grid>
+				</Border>
+
+
+			</Grid>
+
+
+		</Border>
+    </Grid>
+</Window>
