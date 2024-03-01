@@ -8,7 +8,7 @@ Pomodoro is a simple timer application built using C# and WPF (Windows Presentat
 - **Short Break Timer**: Take short breaks after each work session, typically 5 minutes long.
 - **Long Break Timer**: After completing a set number of work sessions, take a longer break, typically 15 minutes long.
 - **Customizable Settings**: Adjust the duration of the pomodoro, short break, and long break sessions according to your preferences.
-- **Cycle Counter**: Keep track of how many pomodoro cycles you've completed.
+- **Cycle Counter**: Define how much cycles you need to do before the longbreak !
 
 ## How to Use
 1. **Download**: Clone or download the source code from this repository.
