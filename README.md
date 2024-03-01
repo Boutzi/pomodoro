@@ -13,7 +13,7 @@ Pomodoro is a simple timer application built using C# and WPF (Windows Presentat
 ## How to Use
 1. **Download**: Clone or download the source code from this repository.
 2. **Build**: Open the project in Visual Studio and build the solution.
-3. **Run**: Start the application by running the generated executable file (`app.exe`) located in the `release` folder.
+3. **Run**: Start the application by running the generated executable file (`Pomodoro.exe`) located in the `Release` folder.
 4. **Configure Settings**: Adjust the duration of pomodoro, short break, and long break sessions by entering the desired values in the corresponding text boxes.
 5. **Start Timer**: Click on the "Pomodoro" button to start the timer for your work session.
 6. **Take Breaks**: After each work session, the application will automatically switch to short breaks and long breaks according to your predefined settings.
