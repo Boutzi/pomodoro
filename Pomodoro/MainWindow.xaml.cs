@@ -105,12 +105,13 @@ namespace Pomodoro
 		{
 			if (isTimerRunning)
 			{
-				remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(60));
+				remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(1));
                 ResetTimerText();
                 if (remainingTime == TimeSpan.Zero)
 				{
                     PlaySound(Properties.Resources.end);
-                    switch (state)
+
+					switch (state)
 					{
 						case "pomodoro":
 							pomodoroCompleted++;
@@ -131,7 +132,14 @@ namespace Pomodoro
 							ChangeState("pomodoro");
                             break;
                     }
-                }
+					this.Topmost = true;
+
+					if (this.WindowState == WindowState.Minimized)
+					{
+						this.WindowState = WindowState.Normal;
+					}
+					this.Activate();
+				}
 			}
 		}
 

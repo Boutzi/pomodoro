@@ -70,7 +70,7 @@
 					Grid.ColumnSpan="2"
 					VerticalAlignment="Center"
 					MouseLeftButtonDown="MouseDragBar">
-			<TextBlock Text="Pomodoro v1.2.0.0"
+			<TextBlock Text="Pomodoro v1.2.1.0"
 					   FontWeight="Light"
 						FontSize="13"
 					   Margin="10 0 0 0"
@@ -178,7 +178,6 @@
 						   VerticalAlignment="Center"
 						   FontSize="103"/>
 				</Border>
-				
 				<Border Height="64"
 						Width="64"
 						Grid.Row="4"

@@ -204,7 +204,7 @@
 					<ControlTemplate TargetType="Button">
 						<Grid>
 							<Border  Height="30"
-                                     Width="30" 
+                                     Width="33" 
                                      x:Name="borderGitHub" 
 									 Cursor="Hand"
                                      BorderThickness="0"
