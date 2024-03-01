@@ -1,7 +1,9 @@
 # Pomodoro
 
 ## Overview
-Pomodoro is a simple timer application built using C# and WPF (Windows Presentation Foundation). It follows the Pomodoro Technique, a time management method that uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks.
+Pomodoro is a simple timer application built using C# and WPF (Windows Presentation Foundation) in the .NET Framework. It follows the Pomodoro Technique, a time management method that uses a timer to break down work into intervals, traditionally 25 minutes in length, separated by short breaks. This application aims to boost productivity by helping users focus on tasks during dedicated work periods and providing opportunities for relaxation during breaks.
+
+The App is completely inspired by the website pomofocus.io, developed by [Yuya Uzu](https://uzu.works/).
 
 ## Features
 - **Pomodoro Timer**: Set a timer for your work session, typically 25 minutes long.
