@@ -13,21 +13,27 @@
         ResizeMode="NoResize"
         Background="Transparent"
         AllowsTransparency="True"
+		Icon="Images/Pomodoro_Logo.ico"
 		x:Class="Pomodoro.MainWindow">
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="32"/>
 			<RowDefinition/>
 		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition Width="420"/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+
+		
 		<Border Background="{StaticResource mainColorDarker}"
                 CornerRadius="5 5 0 0"
                 BorderThickness="1 1 1 0"
                 BorderBrush="{StaticResource borderColorDarker}"
-			    Grid.ColumnSpan="2"
+			    Grid.ColumnSpan="3"
 			    Grid.Row="0"
                 MouseLeftButtonDown="MouseDragBar">
-
 			<Border x:Name="Border1" 
 					Grid.Row="0"
                     Height="32"
@@ -39,6 +45,8 @@
 							VerticalAlignment="Center" 
 							HorizontalAlignment="Right" 
 							Margin="20,0,0,0">
+
+
 
 					<Button Content="_" 
                             Click="MinimizeButton_Click"
@@ -56,12 +64,25 @@
 			</Border>
 
 		</Border>
+		
+		<StackPanel Grid.Row="0" 
+					Grid.Column="0"
+					Grid.ColumnSpan="2"
+					VerticalAlignment="Center"
+					MouseLeftButtonDown="MouseDragBar">
+			<TextBlock Text="Pomodoro v1.2.0.0"
+					   FontWeight="Light"
+						FontSize="13"
+					   Margin="10 0 0 0"
+						Foreground="{StaticResource borderColor}"/>
+		</StackPanel>
+		
 		<Border x:Name="Border2" 
 				Background="{StaticResource mainColor}"
                 CornerRadius="0 0 5 5"
                 BorderThickness="1 0 1 1"
                 BorderBrush="{StaticResource borderColorDarker}"
-			    Grid.ColumnSpan="2"
+			    Grid.ColumnSpan="3"
 			    Grid.Row="1">
 			<Grid>
 				<Grid.RowDefinitions>
@@ -95,11 +116,11 @@
 								Width="116"
 								Height="28"
 								Background="{StaticResource mainColorDark}"
-								CornerRadius="5"
-								BorderThickness="1 0 1 1">
+								CornerRadius="5">
 							<Button x:Name="PomodoroMode"
 									Content="Pomodoro"
 									Background="Transparent"
+									Style="{StaticResource NoHoverButtonStyle}"
 									BorderThickness="0"
 									Foreground="{StaticResource borderColor}"
 									VerticalAlignment="Center"
@@ -111,27 +132,30 @@
 								Width="116"
 								Height="28"
 								Background="Transparent"
-								CornerRadius="5"
-								BorderThickness="1 0 1 1">
+								CornerRadius="5">
+
+							
 							<Button x:Name="ShortBreakMode"
 									Content="Short Break"
 									Background="Transparent"
+									Style="{StaticResource NoHoverButtonStyle}"
 									BorderThickness="0"
 									Foreground="{StaticResource borderColor}"
 									VerticalAlignment="Center"
 									FontSize="16"
 									Click="ShortBreakMode_Click"/>
 						</Border>
+						
 						<Border x:Name="Border5" 
 								Grid.Column="2"
 								Width="116"
 								Height="28"
 								Background="Transparent"
-								CornerRadius="5"
-								BorderThickness="1 0 1 1">
+								CornerRadius="5">
 							<Button x:Name="LongBreakMode"
 									Content="Long Break"
 									Background="Transparent"
+									Style="{StaticResource NoHoverButtonStyle}"
 									BorderThickness="0"
 									Foreground="{StaticResource borderColor}"
 									VerticalAlignment="Center"
@@ -154,6 +178,18 @@
 						   VerticalAlignment="Center"
 						   FontSize="103"/>
 				</Border>
+				
+				<Border Height="64"
+						Width="64"
+						Grid.Row="4"
+						VerticalAlignment="Bottom"
+						HorizontalAlignment="Right"
+						CornerRadius="0,5,0,0">
+					<Button x:Name="GitHub" 
+							Style="{StaticResource GitHub}"
+							Click="OpenGitHubPage"/>
+				</Border>
+				
 				<Border  x:Name="TimerShortBreak"
 						 Grid.Row="1"
 					Width="420"
@@ -183,8 +219,8 @@
 				</Border>
 
 				<Border Grid.Row="2"
-                        Background="{StaticResource transparentColor}"
-                        BorderBrush="{StaticResource borderColorDarker}"
+                        Background="Transparent"
+                        BorderBrush="{StaticResource transparentColor}"
                         BorderThickness="1"
                         CornerRadius="45"
                         Height="90"
@@ -214,16 +250,19 @@
 				</Border>
 				
 				<Border Grid.Row="4"
-						Width="420"
+						Width="510"
 						Background="{StaticResource transparentColor}"
 						CornerRadius="5 5 0 0"
 						BorderThickness="1 0 1 1">
 					<Grid>
 						<Grid.ColumnDefinitions>
+							<ColumnDefinition />
 							<ColumnDefinition/>
 							<ColumnDefinition/>
 							<ColumnDefinition/>
 						</Grid.ColumnDefinitions>
+						<Grid.RowDefinitions>
+						</Grid.RowDefinitions>
 
 						<Border x:Name="Border6" 
 								Grid.Column="0"
@@ -281,10 +320,29 @@
 										 Style="{StaticResource TextBox}"/>
 							</StackPanel>
 						</Border>
+						<Border x:Name="Border10" 
+								Grid.Column="3"
+								Width="116"
+								Height="48"
+								Background="{StaticResource mainColorDark}"
+								CornerRadius="5"
+								BorderThickness="1 0 1 1">
+							<StackPanel>
+								<TextBlock Text="Cycles"
+										   Foreground="{StaticResource borderColor}"
+										   TextAlignment="Center"
+										   VerticalAlignment="Center"
+										   FontSize="16"/>
+								<TextBox x:Name="cycleValue"
+										 TextChanged="Cycles_LostFocus"
+										 Style="{StaticResource TextBox}">
+								</TextBox>
+							</StackPanel>
+
+						</Border>
 					</Grid>
 				</Border>
-
-
+		
 			</Grid>
 
 

@@ -11,6 +11,7 @@
 	<Color x:Key="secondarydark">#2D7478</Color>
 	<Color x:Key="thirddark">#316284</Color>
 	<Color x:Key="borderdark">#E8E8E8</Color>
+	<Color x:Key="transparentdark">#33A3A3A3</Color>
 
 	<Color x:Key="maindarker">#762121</Color>
 	<Color x:Key="secondarydarker">#134F53</Color>
@@ -27,6 +28,7 @@
 	<SolidColorBrush x:Key="secondaryColorDark" Color="{StaticResource secondarydark}" />
 	<SolidColorBrush x:Key="thirdColorDark" Color="{StaticResource thirddark}" />
 	<SolidColorBrush x:Key="borderColorDark" Color="{StaticResource borderdark}" />
+	<SolidColorBrush x:Key="transparentColorDark" Color="{StaticResource transparentdark}" />
 
 	<SolidColorBrush x:Key="mainColorDarker" Color="{StaticResource maindarker}" />
 	<SolidColorBrush x:Key="secondaryColorDarker" Color="{StaticResource secondarydarker}" />

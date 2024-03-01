@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -19,8 +20,10 @@ namespace Pomodoro
 		private TimeSpan pomodoroTime = TimeSpan.FromMinutes(25);
 		private TimeSpan shortBreakTime = TimeSpan.FromMinutes(5);
 		private TimeSpan longBreakTime = TimeSpan.FromMinutes(15);
+		private int cyclesNumber = 4;
+		private int pomodoroCompleted = 0;
 
-        private WaveOutEvent outputDevice;
+		private WaveOutEvent outputDevice;
         private AudioFileReader audioFile;
 
         private string state;
@@ -39,6 +42,7 @@ namespace Pomodoro
 		private SolidColorBrush secondaryColorDarkBrush;
 		private SolidColorBrush thirdColorDarkBrush;
 		private SolidColorBrush borderColorDarkBrush;
+		private SolidColorBrush transparentColorDarkBrush;
 
 		private SolidColorBrush mainColorDarkerBrush;
 		private SolidColorBrush secondaryColorDarkerBrush;
@@ -52,6 +56,32 @@ namespace Pomodoro
 			InitializeComponent();
 			InitializeTimer();
 			InitializeData();
+			InitializeColors();
+		}
+
+		private void InitializeData()
+		{
+            DataContext = this;
+            state = "pomodoro";
+        }
+
+        private void InitializeTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += new EventHandler(Timer_Tick);
+            pomodoroValue.Text = pomodoroTime.ToString(@"mm");
+            shortBreakValue.Text = shortBreakTime.ToString(@"mm");
+			longBreakValue.Text = longBreakTime.ToString(@"mm");
+			TimerPomodoroText.Text = pomodoroTime.ToString(@"mm\:ss");
+			TimerShortBreakText.Text = shortBreakTime.ToString(@"mm\:ss");
+			TimerLongBreakText.Text = longBreakTime.ToString(@"mm\:ss");
+			cycleValue.Text = cyclesNumber.ToString();
+			remainingTime = pomodoroTime;
+		}
+
+		private void InitializeColors()
+		{
 			mainColorBrush = (SolidColorBrush)FindResource("mainColor");
 			secondaryColorBrush = (SolidColorBrush)FindResource("secondaryColor");
 			thirdColorBrush = (SolidColorBrush)FindResource("thirdColor");
@@ -68,27 +98,6 @@ namespace Pomodoro
 			thirdColorDarkerBrush = (SolidColorBrush)FindResource("thirdColorDarker");
 			borderColorDarkerBrush = (SolidColorBrush)FindResource("borderColorDarker");
 		}
-
-		private void InitializeData()
-		{
-            DataContext = this;
-            state = "pomodoro";
-        }
-
-
-        private void InitializeTimer()
-        {
-            timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += new EventHandler(Timer_Tick);
-            pomodoroValue.Text = pomodoroTime.ToString(@"mm");
-            shortBreakValue.Text = shortBreakTime.ToString(@"mm");
-			longBreakValue.Text = longBreakTime.ToString(@"mm");
-			TimerPomodoroText.Text = pomodoroTime.ToString(@"mm\:ss");
-			TimerShortBreakText.Text = shortBreakTime.ToString(@"mm\:ss");
-			TimerLongBreakText.Text = longBreakTime.ToString(@"mm\:ss");
-            remainingTime = pomodoroTime;
-		}
 		#endregion
 
 		#region Timer Functions
@@ -96,7 +105,7 @@ namespace Pomodoro
 		{
 			if (isTimerRunning)
 			{
-				remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(1));
+				remainingTime = remainingTime.Subtract(TimeSpan.FromSeconds(60));
                 ResetTimerText();
                 if (remainingTime == TimeSpan.Zero)
 				{
@@ -104,13 +113,22 @@ namespace Pomodoro
                     switch (state)
 					{
 						case "pomodoro":
-							ChangeState("shortbreak");
+							pomodoroCompleted++;
+							if (pomodoroCompleted >= cyclesNumber)
+							{
+								ChangeState("longbreak");
+							}
+							else
+							{
+								ChangeState("shortbreak");
+							}
 							break;
 						case "shortbreak":
 							ChangeState("pomodoro");
 							break;
 						case "longbreak":
-                            ChangeState("pomodoro");
+							pomodoroCompleted = 0;
+							ChangeState("pomodoro");
                             break;
                     }
                 }
@@ -141,6 +159,7 @@ namespace Pomodoro
 					Border6.Background = mainColorDarkBrush;
 					Border7.Background = mainColorDarkBrush;
 					Border8.Background = mainColorDarkBrush;
+					Border10.Background = mainColorDarkBrush;
 					break;
 				case "shortbreak":
                     state = "shortbreak";
@@ -162,6 +181,7 @@ namespace Pomodoro
 					Border6.Background = secondaryColorDarkBrush;
 					Border7.Background = secondaryColorDarkBrush;
 					Border8.Background = secondaryColorDarkBrush;
+					Border10.Background = secondaryColorDarkBrush;
 					break;
 				case "longbreak":
                     state = "longbreak";
@@ -183,6 +203,7 @@ namespace Pomodoro
 					Border6.Background = thirdColorDarkBrush;
 					Border7.Background = thirdColorDarkBrush;
 					Border8.Background = thirdColorDarkBrush;
+					Border10.Background = thirdColorDarkBrush;
 					break;
             }
             StopTimer();
@@ -215,7 +236,6 @@ namespace Pomodoro
 			timer.Stop();
 			ResetTimerText();
 		}
-        #endregion
 
 		private void ResetTimerText()
 		{
@@ -245,6 +265,7 @@ namespace Pomodoro
 			}
 
         }
+		#endregion
 
 		#region Input Focus Functions
 		private void PomodoroValue_LostFocus(object sender, RoutedEventArgs e)
@@ -274,11 +295,20 @@ namespace Pomodoro
 			if (int.TryParse(longBreakValue.Text, out int longBreakMinutes))
 			{
 				longBreakTime = TimeSpan.FromMinutes(longBreakMinutes);
-                if (!isTimerRunning)
-                    remainingTime = longBreakTime;
-                TimerLongBreakText.Text = remainingTime.ToString(@"mm\:ss");
-            }
+				if (!isTimerRunning)
+					remainingTime = longBreakTime;
+				TimerLongBreakText.Text = remainingTime.ToString(@"mm\:ss");
+			}
 		}
+
+		private void Cycles_LostFocus(object sender, RoutedEventArgs e)
+		{
+			if (int.TryParse(cycleValue.Text, out int cycles))
+			{
+				cyclesNumber = cycles;
+			}
+		}
+
 		#endregion
 
 		#region Button Click Functions
@@ -296,10 +326,14 @@ namespace Pomodoro
         {
             ChangeState("longbreak");
         }
-        #endregion
+		private void OpenGitHubPage(object sender, RoutedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://github.com/Boutzi");
+		}
+		#endregion
 
-        #region Player Functions
-        protected virtual void OnPropertyChanged(string propertyName)
+		#region Player Functions
+		protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
