@@ -27,7 +27,7 @@
 						<ControlTemplate.Triggers>
 							<!-- Déclencheur pour le survol de la souris -->
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="border_" Property="Background" Value="#999" />
+								<Setter TargetName="border_" Property="Background" Value="#22FFFFFF" />
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -62,7 +62,7 @@
 						<ControlTemplate.Triggers>
 							<!-- Déclencheur pour le survol de la souris -->
 							<Trigger Property="IsMouseOver" Value="True">
-								<Setter TargetName="borderX" Property="Background" Value="#999" />
+								<Setter TargetName="borderX" Property="Background" Value="#22FFFFFF" />
 							</Trigger>
 						</ControlTemplate.Triggers>
 					</ControlTemplate>
@@ -198,6 +198,28 @@
 	<Style BasedOn="{StaticResource {x:Type Button}}"
        TargetType="{x:Type Button}"
        x:Key="GitHub">
+		<Style.Setters>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Button">
+						<Grid>
+							<Border  Height="30"
+                                     Width="33" 
+                                     x:Name="borderGitHub" 
+									 Cursor="Hand"
+                                     BorderThickness="0"
+                                     CornerRadius="50">
+								<Image Source="..\Images/github.png" Width="40" Margin="0,0,0,0"/>
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style.Setters>
+	</Style>
+	<Style BasedOn="{StaticResource {x:Type Button}}"
+       TargetType="{x:Type Button}"
+       x:Key="Mute">
 		<Style.Setters>
 			<Setter Property="Template">
 				<Setter.Value>
