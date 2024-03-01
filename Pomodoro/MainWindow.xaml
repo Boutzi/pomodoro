@@ -70,7 +70,7 @@
 					Grid.ColumnSpan="2"
 					VerticalAlignment="Center"
 					MouseLeftButtonDown="MouseDragBar">
-			<TextBlock Text="Pomodoro v1.2.2.0"
+			<TextBlock Text="Pomodoro v1.3.0.0"
 					   FontWeight="Light"
 						FontSize="13"
 					   Margin="10 0 0 0"
@@ -192,13 +192,12 @@
 						Width="64"
 						Grid.Row="4" 
 						VerticalAlignment="Bottom"
-						HorizontalAlignment="Left"
-						CornerRadius="0,5,0,0">
-					<Button x:Name="Mute" 
-							Style="{StaticResource GitHub}"
-							Click="OpenGitHubPage"/>
+						HorizontalAlignment="Left">
+					<ToggleButton x:Name="Mute" 
+							Style="{StaticResource Mute}"
+							IsChecked="false"/>
 				</Border>
-
+ 
 
 				<Border  x:Name="TimerShortBreak"
 						 Grid.Row="1"

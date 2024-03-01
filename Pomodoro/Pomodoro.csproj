@@ -219,6 +219,8 @@
     <Resource Include="Images\github.png" />
     <Resource Include="Images\Pomodoro_Logo.ico" />
     <Resource Include="Pomodoro_Logo.ico" />
+    <Resource Include="Images\mute.png" />
+    <Resource Include="Images\speaker.png" />
     <Content Include="Sounds\end.wav" />
     <Content Include="Sounds\start.wav" />
   </ItemGroup>

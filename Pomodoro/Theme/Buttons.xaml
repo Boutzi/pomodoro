@@ -217,26 +217,39 @@
 			</Setter>
 		</Style.Setters>
 	</Style>
-	<Style BasedOn="{StaticResource {x:Type Button}}"
-       TargetType="{x:Type Button}"
-       x:Key="Mute">
+
+	<Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+   TargetType="{x:Type ToggleButton}"
+   x:Key="Mute">
 		<Style.Setters>
 			<Setter Property="Template">
 				<Setter.Value>
-					<ControlTemplate TargetType="Button">
+					<ControlTemplate TargetType="ToggleButton">
 						<Grid>
 							<Border  Height="30"
-                                     Width="33" 
-                                     x:Name="borderGitHub" 
-									 Cursor="Hand"
-                                     BorderThickness="0"
-                                     CornerRadius="50">
-								<Image Source="..\Images/github.png" Width="40" Margin="0,0,0,0"/>
+                                 Width="32" 
+                                 x:Name="borderMute" 
+								 Cursor="Hand"
+                                 Background="#33A3A3A3"
+                                 BorderThickness="0"
+                                 CornerRadius="50">
+								<Image x:Name="image" Source="..\Images/speaker.png" Width="32"/>
 							</Border>
 						</Grid>
+						<ControlTemplate.Triggers>
+							<!-- Déclencheur pour le survol de la souris -->
+							<Trigger Property="IsMouseOver" Value="True">
+								<Setter TargetName="borderMute" Property="Background" Value="#66FFFFFF"/>
+							</Trigger>
+							<Trigger Property="IsChecked" Value="True">
+								<Setter TargetName="image" Property="Source" Value="..\Images\mute.png"/>
+								<Setter TargetName="image" Property="Margin" Value="0"/>
+							</Trigger>
+						</ControlTemplate.Triggers>
 					</ControlTemplate>
 				</Setter.Value>
 			</Setter>
 		</Style.Setters>
 	</Style>
+	
 </ResourceDictionary> 

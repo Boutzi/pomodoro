@@ -227,8 +227,11 @@ namespace Pomodoro
 
 		private void PlaySound(System.IO.UnmanagedMemoryStream sound)
         {
-            SoundPlayer soundstart = new SoundPlayer(sound);
-            soundstart.Play();
+			if (Mute.IsChecked == false)
+			{
+				SoundPlayer soundstart = new SoundPlayer(sound);
+				soundstart.Play();
+			}
         }
 
 		private void PauseTimer()
@@ -333,7 +336,7 @@ namespace Pomodoro
 		private void LongBreakMode_Click(object sender, RoutedEventArgs e)
         {
             ChangeState("longbreak");
-        }
+		}
 		private void OpenGitHubPage(object sender, RoutedEventArgs e)
 		{
 			System.Diagnostics.Process.Start("https://github.com/Boutzi");
