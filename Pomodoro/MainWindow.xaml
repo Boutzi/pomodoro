@@ -12,7 +12,6 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="Transparent"
-        AllowsTransparency="True"
 		Icon="Images/Pomodoro_Logo.ico"
 		x:Class="Pomodoro.MainWindow">
 	<Grid>
@@ -70,7 +69,7 @@
 					Grid.ColumnSpan="2"
 					VerticalAlignment="Center"
 					MouseLeftButtonDown="MouseDragBar">
-			<TextBlock Text="Pomodoro v1.3.0.0"
+			<TextBlock Text="Pomodoro"
 					   FontWeight="Light"
 						FontSize="13"
 					   Margin="10 0 0 0"
@@ -188,9 +187,23 @@
 							Style="{StaticResource GitHub}"
 							Click="OpenGitHubPage"/>
 				</Border>
-				<Border Height="64"
+				<Border Height="16"
 						Width="64"
 						Grid.Row="4" 
+						VerticalAlignment="Bottom"
+						HorizontalAlignment="Left">
+					<StackPanel>
+						<TextBlock x:Name="VersionArea"
+								   Text ="1.0.0.0"
+								   FontSize="10"
+								   Margin="5 0 0 0"
+								   FontWeight="Light"
+								   Foreground="{StaticResource borderColor}"/>
+					</StackPanel>
+				</Border>
+				<Border Height="64"
+						Width="64"
+						Grid.Row="0" 
 						VerticalAlignment="Bottom"
 						HorizontalAlignment="Left">
 					<ToggleButton x:Name="Mute" 

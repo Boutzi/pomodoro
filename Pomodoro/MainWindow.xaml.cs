@@ -2,13 +2,18 @@
 using NAudio.Wave;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO.Compression;
 using System.Media;
+using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.IO;
 
 
 namespace Pomodoro
@@ -17,6 +22,8 @@ namespace Pomodoro
 	{
 
 		#region Declaration
+		private string currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
 		private TimeSpan pomodoroTime = TimeSpan.FromMinutes(25);
 		private TimeSpan shortBreakTime = TimeSpan.FromMinutes(5);
 		private TimeSpan longBreakTime = TimeSpan.FromMinutes(15);
@@ -57,6 +64,8 @@ namespace Pomodoro
 			InitializeTimer();
 			InitializeData();
 			InitializeColors();
+			InitializeVersion();
+			CheckUpdate();
 		}
 
 		private void InitializeData()
@@ -97,6 +106,46 @@ namespace Pomodoro
 			secondaryColorDarkerBrush = (SolidColorBrush)FindResource("secondaryColorDarker");
 			thirdColorDarkerBrush = (SolidColorBrush)FindResource("thirdColorDarker");
 			borderColorDarkerBrush = (SolidColorBrush)FindResource("borderColorDarker");
+		}
+		#endregion
+
+		#region Update
+		private void InitializeVersion()
+		{
+			VersionArea.Text = currentVersion;
+			Console.WriteLine("Pomodoro version : " + currentVersion);
+		}
+
+		private void CheckUpdate()
+		{
+			WebClient webClient = new WebClient();
+			var client = new WebClient();
+
+			if (!webClient.DownloadString("https://www.dropbox.com/scl/fi/e4ld8kyetggo3z0pksieu/Update.txt?rlkey=ouwk2q5fcshs5byrachjujfjy&dl=1").Contains(currentVersion))
+			{
+				if (MessageBox.Show("New update available ! Do you want to install it ?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				{
+					try
+					{
+						if (File.Exists(@".\Pomodoro Setup.msi")) { File.Delete(@".\Pomodoro Setup.msi"); }
+						client.DownloadFile("https://www.dropbox.com/scl/fi/3sxhqdae46ookgb22hky5/Pomodoro-Setup.zip?rlkey=1i34uv78z51adx79nzcjxrb1o&dl=1", @"Pomodoro Setup.zip");
+						string zipPath = @".\Pomodoro Setup.zip";
+						string extractPath = @".\.";
+						ZipFile.ExtractToDirectory(zipPath, extractPath);
+
+						Process process = new Process();
+						process.StartInfo.FileName = "msiexec";
+						process.StartInfo.Arguments = String.Format("/i Pomodoro Setup.msi");
+
+						this.Close();
+						process.Start();
+					}
+					catch
+					{
+						Console.WriteLine("Update Error");
+					}
+				}
+			}
 		}
 		#endregion
 
@@ -390,5 +439,6 @@ namespace Pomodoro
 			}
 		}
 		#endregion
+
 	}
 }
