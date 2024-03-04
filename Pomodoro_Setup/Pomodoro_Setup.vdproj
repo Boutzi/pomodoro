@@ -256,12 +256,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_142829EBE3E3B45748C1ECFB6D738EC1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_A4014D9A24B14AC596914F5A8EB1D8DF"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -349,6 +343,12 @@
         "OwnerKey" = "8:_463E5D7B6F1DECF263DC1732FAEBF197"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_142829EBE3E3B45748C1ECFB6D738EC1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -367,6 +367,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -383,6 +399,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -1088,15 +1112,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Pomodoro_Setup"
-        "ProductCode" = "8:{8900D464-C743-4B1C-9FC8-60B844B233A8}"
-        "PackageCode" = "8:{F8EF8709-809B-480C-BE83-EF69A7995722}"
+        "ProductCode" = "8:{DFE918D2-F7F1-49D3-B499-1E0DE4B49D76}"
+        "PackageCode" = "8:{E76CDCB2-25B4-42DF-9797-2A8EC41D31AC}"
         "UpgradeCode" = "8:{C0D0DE2D-3E07-422D-8D9B-C2A515EC27D1}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.3.25"
+        "ProductVersion" = "8:1.3.26"
         "Manufacturer" = "8:Boutzi"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
