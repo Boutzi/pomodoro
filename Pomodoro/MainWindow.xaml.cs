@@ -121,11 +121,12 @@ namespace Pomodoro
 			WebClient webClient = new WebClient();
 			var client = new WebClient();
 
-			if (!webClient.DownloadString("https://raw.githubusercontent.com/Boutzi/pomodoro/main/Pomodoro_Setup/latest/update.txt").Contains(currentVersion))
+			try
 			{
-				if (MessageBox.Show("New update available ! Do you want to install it ?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+				string updateInfo = webClient.DownloadString("https://raw.githubusercontent.com/Boutzi/pomodoro/main/Pomodoro_Setup/latest/update.txt");
+				if (updateInfo.Contains(currentVersion))
 				{
-					try
+					if (MessageBox.Show("New update available! Do you want to install it?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
 					{
 						if (File.Exists(@".\Pomodoro_Setup.msi")) { File.Delete(@".\Pomodoro_Setup.msi"); }
 						client.DownloadFile("https://github.com/Boutzi/pomodoro/raw/main/Pomodoro_Setup/latest/Pomodoro_Setup.zip", @"Pomodoro_Setup.zip");
@@ -140,13 +141,14 @@ namespace Pomodoro
 						this.Close();
 						process.Start();
 					}
-					catch
-					{
-						Console.WriteLine("Update Error");
-					}
 				}
 			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Update Error: " + ex.Message);
+			}
 		}
+
 		#endregion
 
 		#region Timer Functions
