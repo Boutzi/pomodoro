@@ -121,14 +121,14 @@ namespace Pomodoro
 			WebClient webClient = new WebClient();
 			var client = new WebClient();
 
-			if (!webClient.DownloadString("https://github.com/Boutzi/pomodoro/blob/main/Pomodoro_Setup/latest/update.txt").Contains(currentVersion))
+			if (!webClient.DownloadString("https://raw.githubusercontent.com/Boutzi/pomodoro/main/Pomodoro_Setup/latest/update.txt").Contains(currentVersion))
 			{
 				if (MessageBox.Show("New update available ! Do you want to install it ?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
 				{
 					try
 					{
 						if (File.Exists(@".\Pomodoro_Setup.msi")) { File.Delete(@".\Pomodoro_Setup.msi"); }
-						client.DownloadFile("https://github.com/Boutzi/pomodoro/blob/main/Pomodoro_Setup/latest/Pomodoro_Setup.zip", @"Pomodoro_Setup.zip");
+						client.DownloadFile("https://github.com/Boutzi/pomodoro/raw/main/Pomodoro_Setup/latest/Pomodoro_Setup.zip", @"Pomodoro_Setup.zip");
 						string zipPath = @".\Pomodoro_Setup.zip";
 						string extractPath = @".\.";
 						ZipFile.ExtractToDirectory(zipPath, extractPath);
