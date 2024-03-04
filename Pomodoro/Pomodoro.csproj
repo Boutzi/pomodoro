@@ -52,7 +52,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Pomodoro.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Pomodoro_Logo.ico</ApplicationIcon>
@@ -73,7 +73,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Pomodoro_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -192,9 +193,6 @@
     </EmbeddedResource>
     <None Include="Images\Section 1.ai" />
     <None Include="packages.config" />
-    <None Include="pomodoro_certificate.pfx" />
-    <None Include="pomodoro_certificate2.pfx" />
-    <None Include="Pomodoro_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

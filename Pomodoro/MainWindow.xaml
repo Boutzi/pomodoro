@@ -181,7 +181,7 @@
 					Width="64"
 					Grid.Row="0" 
 					VerticalAlignment="Bottom"
-					HorizontalAlignment="Right">
+					HorizontalAlignment="Right"> 
 					<ToggleButton x:Name="Mute" 
 						Style="{StaticResource Mute}"
 						IsChecked="false"/>
