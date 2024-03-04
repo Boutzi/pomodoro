@@ -65,7 +65,7 @@ namespace Pomodoro
 			InitializeData();
 			InitializeColors();
 			InitializeVersion();
-			CheckUpdate();
+			//CheckUpdate();
 		}
 
 		private void InitializeData()
@@ -118,34 +118,35 @@ namespace Pomodoro
 
 		private void CheckUpdate()
 		{
-			WebClient webClient = new WebClient();
-			var client = new WebClient();
+			//WebClient webClient = new WebClient();
+			//var client = new WebClient();
 
-			if (!webClient.DownloadString("https://raw.githubusercontent.com/Boutzi/pomodoro/main/Pomodoro_Setup/latest/update.txt").Contains("1.3.26"))
-			{
-				if (MessageBox.Show("New update available ! Do you want to install it ?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-				{
-					try
-					{
-						if (File.Exists(@".\Pomodoro_Setup.msi")) { File.Delete(@".\Pomodoro_Setup.msi"); }
-						client.DownloadFile("https://github.com/Boutzi/pomodoro/raw/main/Pomodoro_Setup/latest/Pomodoro_Setup.zip", @"Pomodoro_Setup.zip");
-						string zipPath = @".\Pomodoro_Setup.zip";
-						string extractPath = @".\.";
-						ZipFile.ExtractToDirectory(zipPath, extractPath);
+			//if (!webClient.DownloadString("https://raw.githubusercontent.com/Boutzi/pomodoro/main/Pomodoro_Setup/latest/update.txt").Contains("1.3.26"))
+			//{
+			//	if (MessageBox.Show("New update available ! Do you want to install it ?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+			//	{
+			//		try
+			//		{
+			//			Console.WriteLine("Dowloading update...");
+			//			if (File.Exists(@".\Pomodoro_Setup.msi")) { File.Delete(@".\Pomodoro_Setup.msi"); }
+			//			client.DownloadFile("https://github.com/Boutzi/pomodoro/raw/main/Pomodoro_Setup/latest/Pomodoro_Setup.zip", @"Pomodoro_Setup.zip");
+			//			string zipPath = @".\Pomodoro_Setup.zip";
+			//			string extractPath = @".\.";
+			//			ZipFile.ExtractToDirectory(zipPath, extractPath);
 
-						Process process = new Process();
-						process.StartInfo.FileName = "msiexec";
-						process.StartInfo.Arguments = String.Format("/i Pomodoro_Setup.msi");
+			//			Process process = new Process();
+			//			process.StartInfo.FileName = "msiexec";
+			//			process.StartInfo.Arguments = String.Format("/i Pomodoro_Setup.msi");
 
-						this.Close();
-						process.Start();
-					}
-					catch
-					{
-						Console.WriteLine("Update Error");
-					}
-				}
-			}
+			//			this.Close();
+			//			process.Start();
+			//		}
+			//		catch
+			//		{
+			//			Console.WriteLine("Update Error");
+			//		}
+			//	}
+			//}
 		}
 		#endregion
 

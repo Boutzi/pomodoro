@@ -178,6 +178,15 @@
 						   FontSize="103"/>
 				</Border>
 				<Border Height="64"
+					Width="64"
+					Grid.Row="0" 
+					VerticalAlignment="Bottom"
+					HorizontalAlignment="Right">
+					<ToggleButton x:Name="Mute" 
+						Style="{StaticResource Mute}"
+						IsChecked="false"/>
+				</Border>
+				<Border Height="64"
 						Width="64"
 						Grid.Row="4"
 						VerticalAlignment="Bottom"
@@ -201,15 +210,7 @@
 								   Foreground="{StaticResource borderColor}"/>
 					</StackPanel>
 				</Border>
-				<Border Height="64"
-						Width="64"
-						Grid.Row="0" 
-						VerticalAlignment="Bottom"
-						HorizontalAlignment="Left">
-					<ToggleButton x:Name="Mute" 
-							Style="{StaticResource Mute}"
-							IsChecked="false"/>
-				</Border>
+				
  
 
 				<Border  x:Name="TimerShortBreak"
