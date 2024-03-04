@@ -121,21 +121,21 @@ namespace Pomodoro
 			WebClient webClient = new WebClient();
 			var client = new WebClient();
 
-			if (!webClient.DownloadString("https://www.dropbox.com/scl/fi/e4ld8kyetggo3z0pksieu/Update.txt?rlkey=ouwk2q5fcshs5byrachjujfjy&dl=1").Contains(currentVersion))
+			if (!webClient.DownloadString("https://github.com/Boutzi/pomodoro/blob/main/Pomodoro_Setup/latest/update.txt").Contains(currentVersion))
 			{
 				if (MessageBox.Show("New update available ! Do you want to install it ?", "Pomodoro App", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
 				{
 					try
 					{
-						if (File.Exists(@".\Pomodoro Setup.msi")) { File.Delete(@".\Pomodoro Setup.msi"); }
-						client.DownloadFile("https://www.dropbox.com/scl/fi/3sxhqdae46ookgb22hky5/Pomodoro-Setup.zip?rlkey=1i34uv78z51adx79nzcjxrb1o&dl=1", @"Pomodoro Setup.zip");
-						string zipPath = @".\Pomodoro Setup.zip";
+						if (File.Exists(@".\Pomodoro_Setup.msi")) { File.Delete(@".\Pomodoro_Setup.msi"); }
+						client.DownloadFile("https://github.com/Boutzi/pomodoro/blob/main/Pomodoro_Setup/latest/Pomodoro_Setup.zip", @"Pomodoro_Setup.zip");
+						string zipPath = @".\Pomodoro_Setup.zip";
 						string extractPath = @".\.";
 						ZipFile.ExtractToDirectory(zipPath, extractPath);
 
 						Process process = new Process();
 						process.StartInfo.FileName = "msiexec";
-						process.StartInfo.Arguments = String.Format("/i Pomodoro Setup.msi");
+						process.StartInfo.Arguments = String.Format("/i Pomodoro_Setup.msi");
 
 						this.Close();
 						process.Start();
