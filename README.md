@@ -24,7 +24,6 @@ The App is completely inspired by the website pomofocus.io, developed by [Yuya U
 ## Screenshots
 ![Capture d'écran de l'application Pomodoro](https://image.noelshack.com/fichiers/2024/09/5/1709264473-whatsapp-image-2024-03-01-at-04-40-56-2a6933fe.jpg)
 
-
 ## Dependencies
 - NAudio.Wave: A .NET audio library that provides APIs to play, record, and process audio.
 - System.Media: Provides access to system sounds for playing audio alerts.
